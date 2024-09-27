@@ -47,8 +47,12 @@ public class RewrittenIntakeSubsystem extends SubsystemBase implements IIntakeSu
 
     @Override
     public void setExtended(ExtensionState extended) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setExtended'");
+        pivotPID.setSetpoint(
+            switch (extended){
+                case EXTENDED-> IntakeInfo.INTAKE_PIVOT_EXTENDED_SETPOINT;
+                case RETRACTED-> IntakeInfo.INTAKE_PIVOT_DEFAULT_SETPOINT;
+            }
+        );
     }
 
     @Override
