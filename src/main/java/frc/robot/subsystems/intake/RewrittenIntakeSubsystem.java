@@ -26,6 +26,23 @@ public class RewrittenIntakeSubsystem extends SubsystemBase implements IIntakeSu
         intakeMotor = new CANSparkMax(intakeMotorID, CANSparkMax.MotorType.kBrushless);
 
         pivotPID = IntakeInfo.INTAKE_PIVOT_PID_CONSTANTS.create();
+        //different code
+        pivotMotorLeft.restoreFactoryDefaults();
+        pivotMotorRight.restoreFactoryDefaults();
+        intakeMotor.restoreFactoryDefaults();
+
+        pivotMotorLeft.setIdleMode(CANSparkBase.IdleMode.kBrake);
+        pivotMotorRight.setIdleMode(CANSparkBase.IdleMode.kBrake);
+
+        pivotMotorLeft.setInverted(false);
+        pivotMotorRight.follow(pivotMotorLeft,true);
+        //different code
+        pivotMotorLeft.setSmartCurrentLimit(35);
+        pivotMotorRight.setSmartCurrentLimit(35);
+        intakeMotor.setSmartCurrentLimit(35);
+
+        encoder = new DutyCycleEncoder(IDs.INTAKE_ENCODER_DIO_PORT);
+        setExtended(ExtensionState.RETRACTED);
     }
 
     @Override
