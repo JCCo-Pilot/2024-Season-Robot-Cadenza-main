@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.Constants;
 import frc.robot.constants.IDs;
+import frc.robot.constants.RobotInfo.IntakeInfo;
 
 
 public class RewrittenIntakeSubsystem extends SubsystemBase implements IIntakeSubsystem{
@@ -77,6 +78,27 @@ public class RewrittenIntakeSubsystem extends SubsystemBase implements IIntakeSu
     public void intake() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'intake'");
+    }
+    @Override
+    public void periodic(){
+        double pidOutput = -pivotPID.calculate(encoder.getAbsolutePosition());
+
+        if (pidOutput > 0) pidOutput *= Constants.INTAKE_PIVOT_UP_MULTIPLIER;
+
+        SmartDashboard.putNumber("target pivot pos", pivotPID.getSetpoint());
+        SmartDashboard.putNumber("current pivot pos", getPosition());
+        SmartDashboard.putNumber("pivot pid output", pidOutput);
+
+        pivotMotorLeft.set(pidOutput);
+
+        SmartDashboard.putNumber("intake pivot output", pivotMotorRight.getAppliedOutput());
+
+        if (DriverStation.isDisabled()){
+            pivotMotorLeft.setIdleMode(CANSparkBase.IdleMode.kCoast);
+            pivotMotorRight.setIdleMode(CANSparkBase.IdleMode.kCoast);
+
+            setExtended(ExtensionState.RETRACTED);
+        }
     }
 
 
