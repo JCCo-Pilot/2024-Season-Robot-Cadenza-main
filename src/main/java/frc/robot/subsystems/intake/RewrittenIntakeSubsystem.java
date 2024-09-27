@@ -100,6 +100,8 @@ public class RewrittenIntakeSubsystem extends SubsystemBase implements IIntakeSu
             setExtended(ExtensionState.RETRACTED);
         }
     }
-
+    private double getPosition() {
+        return encoder.getAbsolutePosition();
+    }
 
 }
