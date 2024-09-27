@@ -70,8 +70,11 @@ public class RewrittenIntakeSubsystem extends SubsystemBase implements IIntakeSu
 
     @Override
     public void stop() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'stop'");
+        pivotPID.setSetpoint(getPosition());
+
+        pivotMotorLeft.stopMotor();
+        pivotMotorRight.stopMotor();
+        intakeMotor.stopMotor();
     }
 
     @Override
